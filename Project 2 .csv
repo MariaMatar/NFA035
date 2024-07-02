@@ -1,0 +1,24 @@
+Project Details
+Name,Cost,State,Duration
+Project 2 ,200.0,In Progress,20.0
+Employee Details
+Name,Rate,ID,Task
+Maria Matar,110.0,1,Add Blogs
+Employee Details
+Name,Rate,ID,Task
+Haytham Mawla,110.0,1,Add Categories
+Material Details
+Type,Cost,Quantity,Availability
+Material 1,10.0,200,Available
+Material 2,10.0,200,Available
+Task Details
+Name,Duration,Priority
+Add Categories,10,1
+Add Blogs,10,1
+Process Details
+Name,Duration,Complexity
+Process name ,10.0,1
+Employee Details
+Name,Rate,ID,Task
+Maria Matar,110.0,1,Add Blogs
+Haytham Mawla,110.0,1,Add Categories

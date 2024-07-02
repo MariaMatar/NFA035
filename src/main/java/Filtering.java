@@ -116,100 +116,85 @@ public class Filtering {
 
     // Method to update task dropdown based on selected project
     private void updateTaskComboBox(String selectedProject) {
-        if (selectedProject != null && !selectedProject.equals("None")) {
-            taskComboBox.removeAllItems();
-            File projectFile = new File(DataEntry.DATA_DIRECTORY + selectedProject);
-            if (projectFile.exists()) {
-                try (BufferedReader reader = new BufferedReader(new FileReader(projectFile))) {
-                    String line;
-                    boolean tasksSection = false;
-                    while ((line = reader.readLine()) != null) {
-                        if (tasksSection && !line.startsWith("Name")) {
-                            String[] taskDetails = line.split(",");
-                            taskComboBox.addItem(taskDetails[0]);
-                        } else if (line.equals("Tasks")) {
-                            tasksSection = true;
-                        }
+        taskComboBox.removeAllItems();
+        taskComboBox.addItem("None");
+        File projectFile = new File(DataEntry.DATA_DIRECTORY + "/" + selectedProject + ".csv");
+        if (projectFile.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(projectFile))) {
+                String line;
+                boolean tasksSection = false;
+                while ((line = reader.readLine()) != null) {
+                    if (tasksSection && !line.startsWith("Name")) {
+                        String[] taskDetails = line.split(",");
+                        taskComboBox.addItem(taskDetails[0]);
+                    } else if (line.equals("Tasks")) {
+                        tasksSection = true;
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
 
     // Method to update process dropdown based on selected project
     private void updateProcessComboBox(String selectedProject) {
-        if (selectedProject != null && !selectedProject.equals("None")) {
-            processComboBox.removeAllItems();
-            File projectFile = new File(DataEntry.DATA_DIRECTORY + selectedProject);
-            if (projectFile.exists()) {
-                try (BufferedReader reader = new BufferedReader(new FileReader(projectFile))) {
-                    String line;
-                    boolean processesSection = false;
-                    while ((line = reader.readLine()) != null) {
-                        if (processesSection && !line.startsWith("Name")) {
-                            String[] processDetails = line.split(",");
-                            processComboBox.addItem(processDetails[0]); // Add process name to dropdown
-                        } else if (line.equals("Processes")) {
-                            processesSection = true;
-                        }
+        processComboBox.removeAllItems();
+        processComboBox.addItem("None");
+        File projectFile = new File(DataEntry.DATA_DIRECTORY + "/" + selectedProject + ".csv");
+        if (projectFile.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(projectFile))) {
+                String line;
+                boolean processesSection = false;
+                while ((line = reader.readLine()) != null) {
+                    if (processesSection && !line.startsWith("Name")) {
+                        String[] processDetails = line.split(",");
+                        processComboBox.addItem(processDetails[0]);
+                    } else if (line.equals("Processes")) {
+                        processesSection = true;
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
 
     // Method to update employee dropdown based on selected project
     private void updateEmployeeComboBox(String selectedProject) {
-        if (selectedProject != null && !selectedProject.equals("None")) {
-            employeeComboBox.removeAllItems();
-            File projectFile = new File(DataEntry.DATA_DIRECTORY + selectedProject);
-            if (projectFile.exists()) {
-                try (BufferedReader reader = new BufferedReader(new FileReader(projectFile))) {
-                    String line;
-                    boolean humanResourcesSection = false;
-                    while ((line = reader.readLine()) != null) {
-                        if (humanResourcesSection && !line.startsWith("Employee Name")) {
-                            String[] employeeDetails = line.split(",");
-                            employeeComboBox.addItem(employeeDetails[0]); // Add employee name to dropdown
-                        } else if (line.equals("Human Resources")) {
-                            humanResourcesSection = true;
-                        }
+        employeeComboBox.removeAllItems();
+        employeeComboBox.addItem("None");
+        File projectFile = new File(DataEntry.DATA_DIRECTORY + "/" + selectedProject + ".csv");
+        if (projectFile.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(projectFile))) {
+                String line;
+                boolean humanResourcesSection = false;
+                while ((line = reader.readLine()) != null) {
+                    if (humanResourcesSection && !line.startsWith("Name")) {
+                        String[] employeeDetails = line.split(",");
+                        employeeComboBox.addItem(employeeDetails[0]);
+                    } else if (line.equals("Human Resources")) {
+                        humanResourcesSection = true;
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
 
     // Method to display filtered data based on selected project
     private void displayFilteredData(String selectedProject, String selectedTask, String selectedProcess, String selectedEmployee) {
-        // Prepare message or table display for filtered data
         StringBuilder message = new StringBuilder("Filtered Data:\n");
         message.append("Project: ").append(selectedProject).append("\n");
 
-        if (selectedTask != null && !selectedTask.equals("None")) {
-            message.append("Task: ").append(selectedTask).append("\n");
-        }
-        if (selectedProcess != null && !selectedProcess.equals("None")) {
-            message.append("Process: ").append(selectedProcess).append("\n");
-        }
-        if (selectedEmployee != null && !selectedEmployee.equals("None")) {
-            message.append("Employee: ").append(selectedEmployee).append("\n");
-        }
-
-        // Fetch detailed data from CSV or other sources based on project name
-        File projectFile = new File(DataEntry.DATA_DIRECTORY + selectedProject);
+        File projectFile = new File(DataEntry.DATA_DIRECTORY + "/" + selectedProject + ".csv");
         if (projectFile.exists()) {
             try (BufferedReader reader = new BufferedReader(new FileReader(projectFile))) {
                 String line;
                 boolean dataSection = false;
                 while ((line = reader.readLine()) != null) {
-                    if (dataSection) {
+                    if (dataSection && !line.startsWith("Task")) {
                         String[] dataDetails = line.split(",");
                         if ((selectedTask == null || selectedTask.equals("None") || dataDetails[0].equals(selectedTask)) &&
                                 (selectedProcess == null || selectedProcess.equals("None") || dataDetails[1].equals(selectedProcess)) &&
@@ -233,18 +218,16 @@ public class Filtering {
             }
         }
 
-        // Show the message dialog with filtered data
         JOptionPane.showMessageDialog(null, message.toString());
     }
 
     public static void main(String[] args) {
         DefaultListModel<String> projectListModel = new DefaultListModel<>();
-        // Load projects from the data directory or from DataEntry class
         File dir = new File(DataEntry.DATA_DIRECTORY);
         File[] files = dir.listFiles((d, name) -> name.endsWith(".csv"));
         if (files != null) {
             for (File file : files) {
-                projectListModel.addElement(file.getName());
+                projectListModel.addElement(file.getName().replace(".csv", ""));
             }
         }
 

@@ -4,6 +4,20 @@ public class HumanResource extends Resource{
     private double humanResourceUnitCost;
     private String humanResourceType;
     private boolean humanResourceAvailability;
+    private double hourlyRate;
+
+    public HumanResource(String resourceId, String resourceName, double resourceUnitCost, String resourceType, boolean resourceAvailability, double hourlyRate) {
+        super(resourceId, resourceName, resourceUnitCost, resourceType, resourceAvailability);
+        this.hourlyRate = hourlyRate;
+    }
+
+    public double getHourlyRate() {
+        return hourlyRate;
+    }
+
+    public void setHourlyRate(double hourlyRate) {
+        this.hourlyRate = hourlyRate;
+    }
 
     public HumanResource(String humanResourceId, String humanResourceName, double humanResourceUnitCost, String humanResourceType, boolean humanResourceAvailability) {
         super(humanResourceId, humanResourceName, humanResourceUnitCost, humanResourceType, humanResourceAvailability);

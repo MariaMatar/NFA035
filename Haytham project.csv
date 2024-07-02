@@ -1,0 +1,18 @@
+Project Details
+Name,Cost,State,Duration
+Haytham project,200.0,In Progress,300.0
+Employee Details
+Maria Matar,10.0,1,Add Category
+Employee Details
+Haytham ,10.0,1,Add product
+Tasks
+Name,Duration,Priority
+Add product,20,1
+Add Category,20,1
+Material Resources
+Type,Cost,Quantity,Availability
+Material 1,10.0,100,Available
+Material 2,10.0,100,Available
+Processes
+Name,Duration,Cost
+Process NAME,110,110.0
