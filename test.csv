@@ -1,0 +1,13 @@
+Project Details
+Name,Cost,State,Duration
+test,220.0,In Progress,2210.0
+rrr,Role 1,200.0
+Human Resources
+Name,Role,Hourly Rate
+rrr,Role 1,200.0
+Material Resources
+Type,Cost,Quantity,Availability
+Tasks
+Name,Type,Duration,Priority
+Processes
+Name,Type,Cost,Duration
