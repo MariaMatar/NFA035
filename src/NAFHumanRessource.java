@@ -3,6 +3,8 @@ public class NAFHumanRessource  extends NAFRessource implements NAFRessourceInte
     NAFHumanRessource(String name){
 
         super(name);
+
+        nbHours_ = 0;
     }
 
     public double getCost(){
@@ -11,4 +13,11 @@ public class NAFHumanRessource  extends NAFRessource implements NAFRessourceInte
 
         return cost;
     }
+
+    public double getNbHours(){
+
+        return nbHours_;
+    }
+
+    private  double nbHours_;
 }
