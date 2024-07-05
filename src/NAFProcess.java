@@ -38,7 +38,13 @@ public class NAFProcess extends DefaultMutableTreeNode {
         return name_;
     }
 
-    private String      name_;
-    private double      duration_;
-    private NAFState    state_;
+    public List<NAFRessource> getRessources(){
+
+        return ressources_;
+    }
+
+    private String              name_;
+    private double              duration_;
+    private NAFState            state_;
+    private List<NAFRessource>  ressources_;
 }
