@@ -4,6 +4,8 @@ public class NAFMaterialRessource  extends NAFRessource implements NAFRessourceI
     NAFMaterialRessource(String name){
 
         super(name);
+
+        quantity_ = 0;
     }
 
     public double getCost(){
@@ -12,4 +14,11 @@ public class NAFMaterialRessource  extends NAFRessource implements NAFRessourceI
 
         return cost;
     }
+
+    public double getQuantity(){
+
+        return quantity_;
+    }
+
+    private double quantity_;
 }
