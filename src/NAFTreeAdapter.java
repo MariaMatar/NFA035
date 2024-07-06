@@ -8,11 +8,11 @@ import javax.swing.JMenuItem;
 
 public class NAFTreeAdapter extends MouseAdapter{
 
-    private final NAFEnterprise enterprise_;
+    private final NAFUI ui_;
 
-    public NAFTreeAdapter(NAFEnterprise enterprise) {
+    public NAFTreeAdapter(NAFUI ui) {
 
-        enterprise_ = enterprise;
+        ui_ = ui;
     }
 
     // action on tree only
@@ -27,7 +27,7 @@ public class NAFTreeAdapter extends MouseAdapter{
 
     private void buildPopupMenu(MouseEvent evt) {
 
-        TreePath tp = enterprise_.getTree().getPathForLocation(evt.getX(), evt.getY());
+        TreePath tp = ui_.getTree().getPathForLocation(evt.getX(), evt.getY());
         if (tp != null){
 
             if (tp.toString().equals("[Omega]")){

@@ -1,80 +1,203 @@
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import javax.swing.*;
+import java.io.IOException;
+import java.util.Hashtable;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
-import javax.swing.JFrame;
-import javax.swing.JSplitPane;
-import javax.swing.JTree;
-import javax.swing.tree.TreeSelectionModel;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.JScrollPane;
-import java.awt.Dimension;
-import javax.swing.JPanel;
-import javax.swing.UIManager; // for look and feel
 
-public class NAFEnterprise extends JFrame{
+public class NAFEnterprise {
 
-    NAFEnterprise(){
+    public NAFEnterprise(String name){
 
-        super("OMEGA - Fabrication de prototypes");
-
-        setSize(800, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        initGui();
+        name_ = name;
     }
 
-    public JTree getTree(){
+    public void init() throws IOException{
 
-        return tree_;
+        try {
+
+            loadEmployeeFunctionsFomCsv();
+            loadEmployeesFromCsv();
+            loadRawMaterialsFromCsv();
+            loadMiscellaneousFromCsv();
+        }
+        catch (IOException ex) {
+
+            throw ex;
+        }
     }
 
-    private void initRightPane(){
+    private void loadEmployeeFunctionsFomCsv() throws IOException {
 
-        // Toolbar: save, Start, stop, clear,
+        try {
+
+            FileReader      fr          = new FileReader("data/employeeFunctions.csv");
+            BufferedReader  br          = new BufferedReader(fr);
+
+            // Read the file line by line and ignore first line.
+            // First line is the csv header : function,cost($/h)
+            String          line        = br.readLine();
+            int             lineNumber  = 0;
+            while (line != null) {
+
+                lineNumber = lineNumber +1;
+                if(lineNumber != 1) {
+
+                    //Get all tokens available in line
+                    String[] tokens = line.split(",");
+                    Double cost = Double.valueOf(tokens[1]);
+                    employeeFunctions_.put(tokens[0], cost);
+                }
+
+                line = br.readLine();
+            }
+            br.close();
+        }
+        catch (IOException ex) {
+
+            throw ex;
+        }
     }
-    private void initGui(){
 
-        // init tree
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Omega");
-        tree_                       = new JTree(root);
-        tree_.addMouseListener(new NAFTreeAdapter(this));
-        tree_.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+    private void loadEmployeesFromCsv() throws IOException {
 
-        // add tree in scroll pane
-        JScrollPane jsPane          = new JScrollPane();
-        jsPane.setViewportView(tree_);
-        jsPane.setPreferredSize(new Dimension(200, this.getHeight()));
+        try {
 
-        // build the right pane
-        rightPane_                  = new JPanel();
+            FileReader      fr          = new FileReader("data/employees.csv");
+            BufferedReader  br          = new BufferedReader(fr);
 
-        // build the splitpane
-        splitPane_                  = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, jsPane, rightPane_);
-        splitPane_.setDividerSize(3);
+            // Read the file line by line and ignore first line.
+            // First line is the csv header : firstname,surname,function
+            String          line        = br.readLine();
+            int             lineNumber  = 0;
+            while (line != null) {
 
-        // add the splitpane to the frame
-        this.getContentPane().add(splitPane_);
+                lineNumber = lineNumber +1;
+                if(lineNumber != 1) {
+
+                    //Get all tokens available in line
+                    String[] tokens         = line.split(",");
+                    String firstname        = tokens[0];
+                    String surname          = tokens[1];
+                    String employeeFunction = tokens[2];
+
+                    String name         = firstname + "." + surname;
+                    employees_.put(name, employeeFunction);
+                }
+
+                line = br.readLine();
+            }
+
+            br.close();
+        }
+        catch (IOException ex) {
+
+            throw ex;
+        }
     }
 
+    private void loadRawMaterialsFromCsv() throws IOException {
 
-    private JTree       tree_;
-    private JPanel      rightPane_;
-    private JSplitPane  splitPane_;
+        try {
+
+            FileReader      fr          = new FileReader("data/rawMaterials.csv");
+            BufferedReader  br          = new BufferedReader(fr);
+
+            // Read the file line by line and ignore first line.
+            // First line is the csv header : name,cost($/kg)
+            String          line        = br.readLine();
+            int             lineNumber  = 0;
+            while (line != null) {
+
+                lineNumber = lineNumber +1;
+                if(lineNumber != 1) {
+
+                    //Get all tokens available in line
+                    String[] tokens = line.split(",");
+                    Double cost = Double.valueOf(tokens[1]);
+                    rawMaterials_.put(tokens[0], cost);
+                }
+
+                line = br.readLine();
+            }
+            br.close();
+        }
+        catch (IOException ex) {
+
+            throw ex;
+        }
+    }
+
+    private void loadMiscellaneousFromCsv() throws IOException {
+
+        try {
+
+            FileReader      fr          = new FileReader("data/miscellaneous.csv");
+            BufferedReader  br          = new BufferedReader(fr);
+
+            // Read the file line by line and ignore first line.
+            // First line is the csv header : name,cost($)
+            String          line        = br.readLine();
+            int             lineNumber  = 0;
+            while (line != null) {
+
+                lineNumber = lineNumber +1;
+                if(lineNumber != 1) {
+
+                    //Get all tokens available in line
+                    String[] tokens = line.split(",");
+                    Double cost = Double.valueOf(tokens[1]);
+                    miscellaneous_.put(tokens[0], cost);
+                }
+
+                line = br.readLine();
+            }
+            br.close();
+        }
+        catch (IOException ex) {
+
+            throw ex;
+        }
+    }
+
+    String                              name_;
+
+    /**
+     * Association: EmployeeFunction(String)/Cost(double)
+     */
+    Hashtable<String, Double>           employeeFunctions_ = new Hashtable<String, Double>();
+
+    /**
+     * Association: Firstname.Surname(String)/Function(String)
+     */
+    Hashtable<String,String>            employees_           = new Hashtable<String, String>();
+
+    /**
+     * Association: Name(String)/Cost(double)
+     */
+    Hashtable<String, Double>           rawMaterials_       = new Hashtable<String, Double>();
+
+    /**
+     * Association: Name(String)/Cost(double)
+     */
+    Hashtable<String, Double>           miscellaneous_     = new Hashtable<String, Double>();
 
     public static void main(String[] args) {
 
         try {
 
+            NAFEnterprise   enterprise  = new NAFEnterprise("Omega");
+            enterprise.init();
+
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-            NAFEnterprise enterprise = new NAFEnterprise();
-
-            // resize the frame if needed due to inner components size
-
-            enterprise.setVisible(true);
+            NAFUI           ui          = new NAFUI();
+            ui.setVisible(true);
         }
-        catch (Exception e) {
+        catch (Exception ex) {
 
-            System.out.println("Look and Feel not set");
+            System.out.println(ex);
         }
     }
 }
