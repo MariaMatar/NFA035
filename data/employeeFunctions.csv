@@ -1,0 +1,4 @@
+function,cost($/h)
+laborer,20
+technician,40
+engineer,60
